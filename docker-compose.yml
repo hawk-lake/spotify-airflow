@@ -13,13 +13,6 @@ x-environment: &airflow_environment
 x-airflow-image: &airflow_image apache/airflow:2.6.3
 
 services:
-  # Dockerfile을 통한 컨테이너 생성
-  fastapi:
-    build: .
-    ports:
-      - "9000:9000"
-      - "9100:9100"
-
   # airflow가 사용할 메인 데이터베이스
   postgres:
     image: postgres:12-alpine

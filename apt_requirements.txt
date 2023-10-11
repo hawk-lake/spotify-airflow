@@ -1,5 +1,0 @@
-cron
-vim
-git
-wget
-python3-pip
