@@ -21,9 +21,9 @@ default_args = {
 }
 
 # dag 설정
-dag = DAG('get.artists.albums',
+dag = DAG('to.hdfs.artists',
 		  default_args=default_args,
-		  tags=['API', 'MySQL', 'multi-thread'],
+		  tags=['API', 'MySQL', 'JSON', 'multi-thread'],
 		  max_active_runs=1,
 		  schedule_interval="@once")
 
@@ -37,7 +37,7 @@ start = EmptyOperator(
 curl = BashOperator(
 	task_id='curl',
 	bash_command=f"""
-	curl '{host_fastapi}:{port_fastapi}/mysql/album/artist_albums?insert_date={date}'
+	curl '{host_fastapi}:{port_fastapi}/hdfs/artists?insert_date={date}'
 	""",
 	dag=dag
 )

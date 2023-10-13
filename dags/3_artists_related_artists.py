@@ -3,6 +3,10 @@ from datetime import datetime
 from airflow.operators.bash import BashOperator
 from airflow.operators.empty import EmptyOperator
 from airflow.operators.python import BranchPythonOperator
+from airflow.models import Variable
+
+host_fastapi = Variable.get("host_fastapi")
+port_fastapi = Variable.get("port_fastapi")
 
 # execution date 사용
 # 당일 데이터를 호출해야 하므로 + 1일
@@ -13,7 +17,7 @@ date = "{{ (execution_date + macros.timedelta(days=1)).strftime('%Y-%m-%d') }}"
 default_args = {
     'owner': 'spotify:1.0.0',
     'depends_on_past': True,
-    'start_date': datetime(2022,1,20)
+    'start_date': datetime(2023,10,13)
 }
 
 # dag 설정
@@ -33,7 +37,7 @@ start = EmptyOperator(
 curl = BashOperator(
 	task_id='curl',
 	bash_command=f"""
-	curl '222.108.81.83:8000/json/albums?cnt=1'
+	curl '{host_fastapi}:{port_fastapi}/mysql/artists/related_artists?cnt=3&insert_date={date}'
 	""",
 	dag=dag
 )
